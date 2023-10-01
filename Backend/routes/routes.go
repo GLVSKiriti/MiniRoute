@@ -7,7 +7,7 @@ import (
 
 // Authentication Routes
 func AuthRoutes(subRouter *mux.Router, h *handlers.BaseHandler) {
-	subRouter.HandleFunc("/login", h.Login).Methods("GET")
+	subRouter.HandleFunc("/login", h.Login).Methods("POST")
 	subRouter.HandleFunc("/register", h.Register).Methods("POST")
 }
 
