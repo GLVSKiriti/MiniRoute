@@ -5,11 +5,13 @@ import (
 	"github.com/gorilla/mux"
 )
 
-// Routes Here
-func AuthRoutes(subRouter *mux.Router) {
-	subRouter.HandleFunc("/login", handlers.Login).Methods("GET")
+// Authentication Routes
+func AuthRoutes(subRouter *mux.Router, h *handlers.BaseHandler) {
+	subRouter.HandleFunc("/login", h.Login).Methods("GET")
+	subRouter.HandleFunc("/register", h.Register).Methods("POST")
 }
 
-func UrlRoutes(subRouter *mux.Router) {
-	subRouter.HandleFunc("/shorten", handlers.Shorten).Methods("GET")
+// URL shortneing Routes
+func UrlRoutes(subRouter *mux.Router, h *handlers.BaseHandler) {
+	subRouter.HandleFunc("/shorten", h.Shorten).Methods("GET")
 }

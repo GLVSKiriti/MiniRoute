@@ -4,7 +4,7 @@ import "time"
 
 // User model
 type User struct {
-	Uid      string `json:"uid"`
+	Uid      int    `json:"uid"`
 	Email    string `json:"email"`
 	Password string `json:"password"`
 }
