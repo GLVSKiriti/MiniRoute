@@ -54,8 +54,9 @@ func (h *BaseHandler) Login(res http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	res.Header().Set("Authorization", tokenStr)
+	var data = map[string]string{"Authorization": tokenStr}
 	res.WriteHeader(http.StatusOK)
+	json.NewEncoder(res).Encode(data)
 }
 
 // Register Handler
@@ -95,6 +96,8 @@ func (h *BaseHandler) Register(res http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	res.Header().Set("Authorization", tokenStr)
+	var data = map[string]string{"Authorization": tokenStr}
 	res.WriteHeader(http.StatusCreated)
+	json.NewEncoder(res).Encode(data)
+
 }
