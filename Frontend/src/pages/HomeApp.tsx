@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 import emailLogo from "../assets/email.png";
 import passwordLogo from "../assets/password.png";
@@ -12,7 +14,6 @@ function HomeApp() {
   const [password, setPassword] = useState("");
   const [rePassword, setRePassword] = useState("");
   const [loginPage, setLoginPage] = useState(true);
-  const [error, setIsError] = useState("");
   const navigate = useNavigate();
 
   const signUp = async () => {
@@ -25,12 +26,19 @@ function HomeApp() {
         const token = res.data.Authorization;
         sessionStorage.setItem("jwt", token);
         navigate("/dashboard");
+        toast.success("Successfully Registered", {
+          position: "bottom-right",
+        });
       } else {
-        setIsError("Password Mismatched");
+        toast.error("Password Mismatched", {
+          position: "bottom-right",
+        });
       }
     } catch (error: any) {
       if (error.response) {
-        setIsError(error.response.data);
+        toast.error(error.response.data, {
+          position: "bottom-right",
+        });
       }
     }
   };
@@ -43,9 +51,14 @@ function HomeApp() {
       const token = res.data.Authorization;
       sessionStorage.setItem("jwt", token);
       navigate("/dashboard");
+      toast.success("Successfully Signed In", {
+        position: "bottom-right",
+      });
     } catch (error: any) {
       if (error.response) {
-        setIsError(error.response.data);
+        toast.error(error.response.data, {
+          position: "bottom-right",
+        });
       }
     }
   };
