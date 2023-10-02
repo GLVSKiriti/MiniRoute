@@ -6,6 +6,6 @@ import (
 )
 
 // URL shortening handlers
-func (h *BaseHandler) Shorten(w http.ResponseWriter, r *http.Request) {
-	fmt.Printf("Hello shorten")
+func (h *BaseHandler) Shorten(res http.ResponseWriter, req *http.Request) {
+	fmt.Println("Hello shorten", req.Context().Value("Uid"))
 }

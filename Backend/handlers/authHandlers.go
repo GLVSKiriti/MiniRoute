@@ -45,7 +45,7 @@ func (h *BaseHandler) Login(res http.ResponseWriter, req *http.Request) {
 	// Generate a JWT and send it
 	token := jwt.New(jwt.SigningMethodHS256)
 	claims := token.Claims.(jwt.MapClaims)
-	claims["uid"] = uid
+	claims["Uid"] = uid
 	secret_key := []byte(os.Getenv("SECRETKEY"))
 	tokenStr, err := token.SignedString(secret_key)
 
@@ -87,7 +87,7 @@ func (h *BaseHandler) Register(res http.ResponseWriter, req *http.Request) {
 
 	token := jwt.New(jwt.SigningMethodHS256)
 	claims := token.Claims.(jwt.MapClaims)
-	claims["uid"] = uid
+	claims["Uid"] = uid
 	secret_key := []byte(os.Getenv("SECRETKEY"))
 	tokenStr, err := token.SignedString(secret_key)
 

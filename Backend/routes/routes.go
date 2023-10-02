@@ -2,6 +2,7 @@ package routes
 
 import (
 	"github.com/GLVSKiriti/MiniRoute/handlers"
+	"github.com/GLVSKiriti/MiniRoute/middleware"
 	"github.com/gorilla/mux"
 )
 
@@ -13,5 +14,5 @@ func AuthRoutes(subRouter *mux.Router, h *handlers.BaseHandler) {
 
 // URL shortneing Routes
 func UrlRoutes(subRouter *mux.Router, h *handlers.BaseHandler) {
-	subRouter.HandleFunc("/shorten", h.Shorten).Methods("GET")
+	subRouter.HandleFunc("/shorten", middleware.VerifyToken(h.Shorten)).Methods("GET")
 }

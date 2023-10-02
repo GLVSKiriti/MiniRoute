@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -15,6 +15,13 @@ function HomeApp() {
   const [rePassword, setRePassword] = useState("");
   const [loginPage, setLoginPage] = useState(true);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const token = sessionStorage.getItem("jwt");
+    if (token) {
+      navigate("/dashboard");
+    }
+  }, []);
 
   const signUp = async () => {
     try {
