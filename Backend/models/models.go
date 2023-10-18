@@ -9,7 +9,7 @@ type User struct {
 
 // url model
 type Url struct {
-	Uid            string `json:"uid"`
-	LongUrl        string `json:"longUrl"`
-	CustomShortUrl string `json:"shortUrl"`
+	Uid            string  `json:"uid"`
+	LongUrl        string  `json:"longUrl"`
+	CustomShortUrl *string `json:"shortUrl"` //optional parameter
 }
