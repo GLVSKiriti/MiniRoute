@@ -3,6 +3,7 @@ import { useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 import MiniRoute from "../assets/MiniRoute.png";
+import NavBar from "../components/NavBar";
 
 function Dashboard() {
   const [miniRoute, setMiniRoute] = useState("");
@@ -16,7 +17,7 @@ function Dashboard() {
         "http://localhost:8080/url/shorten",
         {
           longurl: longurl,
-          shorturl: shortCode,
+          shorturl: shortCode ? shortCode : null,
         },
         {
           headers: {
@@ -24,10 +25,14 @@ function Dashboard() {
           },
         }
       );
+
       setMiniRoute("http://localhost:8080/url/redirect/" + res.data.shortUrl);
+      toast.success("Successfully Shortened the URL", {
+        position: "bottom-right",
+      });
     } catch (error: any) {
       if (error.response) {
-        toast.error(error.response.data.Message, {
+        toast.error(error.response.data, {
           position: "bottom-right",
         });
       }
@@ -37,15 +42,7 @@ function Dashboard() {
   return (
     <>
       <div className="dashboardWrapper">
-        <div className="navBar">
-          <div className="logo">
-            <img src={MiniRoute} alt="" />
-          </div>
-          <div className="menu">
-            <div className="myurls">My Urls</div>
-            <div className="logout">LogOut</div>
-          </div>
-        </div>
+        <NavBar />
         <div className="dashboard">
           <div className="urlShortnerPad">
             <div className="inputTitle">

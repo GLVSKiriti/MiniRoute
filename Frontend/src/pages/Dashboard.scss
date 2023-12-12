@@ -9,49 +9,7 @@
   height: 100vh;
   width: 100vw;
   background-color: #f8f8f8;
-  .navBar {
-    @include shadow;
-    height: 12vh;
-    width: 100vw;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    box-sizing: border-box;
-    padding: 0 2rem 0 2rem;
 
-    .logo {
-      height: 45px;
-      width: 19vw;
-      img {
-        height: 100%;
-        width: 100%;
-      }
-    }
-    .menu {
-      display: flex;
-      gap: 20px;
-      .logout,
-      .myurls {
-        font-weight: 600;
-        cursor: pointer;
-        font-size: 18px;
-        color: rgba(0, 0, 0, 0.6);
-        &:hover {
-          color: black;
-          transform: scale(1.05);
-          transition: transform 0.3s ease;
-        }
-      }
-    }
-
-    @media (max-width: 700px) {
-      padding: 0 1rem 0 1rem;
-      .logo {
-        height: 40px;
-        width: 40vw;
-      }
-    }
-  }
   .dashboard {
     height: 88vh;
     width: 100vw;

@@ -1,0 +1,47 @@
+.navBar {
+  // navBar height and width are set according to its wrapper which is 100vh*100vw
+  height: 12vh;
+  width: 100vw;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-sizing: border-box;
+  padding: 0 2rem 0 2rem;
+  background-color: white;
+  box-shadow: 0 15px 16.83px 0.17px rgba(0, 0, 0, 0.05);
+  -moz-box-shadow: 0 15px 16.83px 0.17px rgba(0, 0, 0, 0.05);
+  -webkit-box-shadow: 0 15px 16.83px 0.17px rgba(0, 0, 0, 0.05);
+
+  .logo {
+    height: 45px;
+    width: 19vw;
+    img {
+      height: 100%;
+      width: 100%;
+    }
+  }
+  .menu {
+    display: flex;
+    gap: 20px;
+    .logout,
+    .myurls {
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 18px;
+      color: rgba(0, 0, 0, 0.6);
+      &:hover {
+        color: black;
+        transform: scale(1.05);
+        transition: transform 0.3s ease;
+      }
+    }
+  }
+
+  @media (max-width: 700px) {
+    padding: 0 1rem 0 1rem;
+    .logo {
+      height: 40px;
+      width: 40vw;
+    }
+  }
+}
