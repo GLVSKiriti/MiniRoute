@@ -16,4 +16,6 @@ func AuthRoutes(subRouter *mux.Router, h *handlers.BaseHandler) {
 func UrlRoutes(subRouter *mux.Router, h *handlers.BaseHandler) {
 	subRouter.HandleFunc("/shorten", middleware.VerifyToken(h.Shorten)).Methods("POST")
 	subRouter.HandleFunc("/redirect/{shortCode}", middleware.VerifyToken(h.RedirectToOriginalUrl))
+
+	subRouter.HandleFunc("/myurls", middleware.VerifyToken((h.GetMyUrls))).Methods("GET")
 }

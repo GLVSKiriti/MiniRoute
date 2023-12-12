@@ -75,3 +75,36 @@ func (h *BaseHandler) RedirectToOriginalUrl(res http.ResponseWriter, req *http.R
 	// Redierct to original url
 	http.Redirect(res, req, longUrl, http.StatusSeeOther)
 }
+
+func (h *BaseHandler) GetMyUrls(res http.ResponseWriter, req *http.Request) {
+	uid := int(req.Context().Value("Uid").(float64))
+
+	rows, err := h.db.Query("SELECT * FROM urlmappings WHERE uid=$1", uid)
+
+	if err != nil {
+		http.Error(res, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	defer rows.Close()
+
+	var urls []models.Url
+	for rows.Next() {
+		var url models.Url
+		err := rows.Scan(&url.Uid, &url.Id, &url.LongUrl, &url.CustomShortUrl)
+		if err != nil {
+			http.Error(res, err.Error(), http.StatusInternalServerError)
+			return
+		}
+		urls = append(urls, url)
+	}
+
+	if err = rows.Err(); err != nil {
+		http.Error(res, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	res.WriteHeader(http.StatusOK)
+	json.NewEncoder(res).Encode(urls)
+}
+
+//rows.Next() indicates whether the next row from result set is available, and will return true until either result set is exhausted or an error has occurred during fetching the data. For this reason you should always check for an error at the end of the for rows.Next() loop (this is done calling rows.Err()). If there’s an error during the loop, you need to know about it. Don’t just assume that the loop iterates until you’ve processed all the rows.
