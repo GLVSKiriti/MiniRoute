@@ -94,6 +94,9 @@
         border-radius: 5px;
         margin-top: 5px;
         align-self: center;
+        &:disabled {
+          cursor: not-allowed;
+        }
       }
       .logo2 {
         height: 25px;
