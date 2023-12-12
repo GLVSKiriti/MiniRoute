@@ -1,0 +1,121 @@
+@mixin shadow($theme: white) {
+  background-color: $theme;
+  box-shadow: 0 15px 16.83px 0.17px rgba(0, 0, 0, 0.05);
+  -moz-box-shadow: 0 15px 16.83px 0.17px rgba(0, 0, 0, 0.05);
+  -webkit-box-shadow: 0 15px 16.83px 0.17px rgba(0, 0, 0, 0.05);
+}
+
+.dashboardWrapper {
+  height: 100vh;
+  width: 100vw;
+  background-color: #f8f8f8;
+  .navBar {
+    @include shadow;
+    height: 12vh;
+    width: 100vw;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-sizing: border-box;
+    padding: 0 2rem 0 2rem;
+
+    .logo {
+      height: 45px;
+      width: 19vw;
+      img {
+        height: 100%;
+        width: 100%;
+      }
+    }
+    .menu {
+      display: flex;
+      gap: 20px;
+      .logout,
+      .myurls {
+        font-weight: 600;
+        cursor: pointer;
+        font-size: 18px;
+        color: rgba(0, 0, 0, 0.6);
+        &:hover {
+          color: black;
+          transform: scale(1.05);
+          transition: transform 0.3s ease;
+        }
+      }
+    }
+
+    @media (max-width: 700px) {
+      padding: 0 1rem 0 1rem;
+      .logo {
+        height: 40px;
+        width: 40vw;
+      }
+    }
+  }
+  .dashboard {
+    height: 88vh;
+    width: 100vw;
+    background-image: url("https://transparenttextures.com/patterns/inspiration-geometry.png");
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .urlShortnerPad {
+      @include shadow(white);
+      height: 55vh;
+      width: 35vw;
+      box-sizing: border-box;
+      border-radius: 15px;
+      padding: 1rem 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      align-items: start;
+      font-size: 18px;
+      .inputTitle {
+        b {
+          color: red;
+        }
+      }
+      input {
+        width: 95%;
+        border-radius: 8px;
+        font-size: 18px;
+        padding: 0.5rem;
+        border: 1px solid lightgray;
+      }
+      button {
+        background-color: coral;
+        color: white;
+        font-size: 18px;
+        padding: 0.5rem;
+        cursor: pointer;
+        border: none;
+        border-radius: 5px;
+        margin-top: 5px;
+        align-self: center;
+      }
+      .logo2 {
+        height: 25px;
+        width: 30%;
+        img {
+          height: 100%;
+          width: 100%;
+        }
+      }
+
+      .miniroute {
+        outline: none;
+      }
+      @media (max-width: 900px) {
+        width: 50vw;
+        .logo2 {
+          width: 45%;
+        }
+      }
+      @media (max-width: 550px) {
+        width: 80vw;
+      }
+    }
+  }
+}
