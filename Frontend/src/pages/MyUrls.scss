@@ -1,0 +1,23 @@
+.MyUrlsWrapper {
+  height: 100vh;
+  width: 100vw;
+  background-color: #f8f8f8;
+
+  .myurlslist {
+    height: 88vh;
+    width: 100vw;
+    background-image: url("https://transparenttextures.com/patterns/inspiration-geometry.png");
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    .urltable {
+      border: 1px solid lightgrey;
+      border-radius: 10px;
+      .ant-table-thead .ant-table-cell {
+        background-color: coral;
+        color: white;
+        text-align: center;
+      }
+    }
+  }
+}

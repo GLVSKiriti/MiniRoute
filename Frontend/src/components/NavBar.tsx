@@ -15,7 +15,9 @@ function NavBar() {
         <img src={MiniRoute} alt="" />
       </div>
       <div className="menu">
-        <div className="myurls">My Urls</div>
+        <div className="myurls" onClick={() => navigate("/myUrls")}>
+          My Urls
+        </div>
         <div className="logout" onClick={() => logout()}>
           LogOut
         </div>
