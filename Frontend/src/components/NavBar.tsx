@@ -11,7 +11,7 @@ function NavBar() {
 
   return (
     <div className="navBar">
-      <div className="logo">
+      <div className="logo" onClick={() => navigate("/dashboard")}>
         <img src={MiniRoute} alt="" />
       </div>
       <div className="menu">
