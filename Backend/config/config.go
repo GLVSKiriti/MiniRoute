@@ -6,16 +6,10 @@ import (
 	"log"
 	"os"
 
-	"github.com/joho/godotenv"
 	_ "github.com/lib/pq"
 )
 
 func InitDb() *sql.DB {
-	err := godotenv.Load(".env")
-	if err != nil {
-		log.Fatalln("Error loading .env file")
-	}
-
 	host := os.Getenv("host")
 	port := os.Getenv("port")
 	user := os.Getenv("user")
