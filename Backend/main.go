@@ -32,7 +32,7 @@ func main() {
 	routes.AuthRoutes(authRouter, h)
 	routes.UrlRoutes(urlRouter, h)
 
-	err := http.ListenAndServe("localhost:8080", muxHandlers.CORS(header, methods, origins)(router))
+	err := http.ListenAndServe(":8080", muxHandlers.CORS(header, methods, origins)(router))
 	if err != nil {
 		log.Fatalln("There's an error with the server", err)
 	}
