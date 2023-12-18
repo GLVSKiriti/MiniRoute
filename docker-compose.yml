@@ -1,0 +1,20 @@
+version: '2'
+
+services:
+  frontend:
+    container_name: miniroute-frontend
+    build: ./Frontend/
+    restart: always
+    depends_on:
+      - backend
+    ports:
+      - 5173:5173
+
+  backend:
+    container_name: miniroute-backend
+    build: ./Backend/
+    restart: always
+    ports:
+      - 8080:8080
+    env_file:
+      - ./Backend/.env
