@@ -30,7 +30,7 @@ function MyUrls() {
             http://localhost:8080/url/redirect/{value}
             <CopyIcon
               visibility={hoveredRowIndex === rowIndex ? "visible" : "hidden"}
-              copyText={`http://localhost:8080/url/redirect/${value}`}
+              copyText={`http://${location.hostname}:8080/url/redirect/${value}`}
             />
           </span>
         );
@@ -59,7 +59,7 @@ function MyUrls() {
   const fetchMyUrls = async () => {
     try {
       const token = sessionStorage.getItem("jwt");
-      const res = await axios.get("http://localhost:8080/url/myurls", {
+      const res = await axios.get(`http://${location.hostname}:8080/url/myurls`, {
         headers: {
           Authorization: token,
         },

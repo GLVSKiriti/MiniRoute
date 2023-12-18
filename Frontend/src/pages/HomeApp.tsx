@@ -26,7 +26,7 @@ function HomeApp() {
   const signUp = async () => {
     try {
       if (password === rePassword) {
-        const res = await axios.post("http://localhost:8080/auth/register", {
+        const res = await axios.post(`http://${location.hostname}:8080/auth/register`, {
           email: email,
           password: password,
         });
@@ -51,7 +51,7 @@ function HomeApp() {
   };
   const signIn = async () => {
     try {
-      const res = await axios.post("http://localhost:8080/auth/login", {
+      const res = await axios.post(`http://${location.hostname}:8080/auth/login`, {
         email: email,
         password: password,
       });

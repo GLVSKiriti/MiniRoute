@@ -14,7 +14,7 @@ function Dashboard() {
     try {
       const token = sessionStorage.getItem("jwt");
       const res = await axios.post(
-        "http://localhost:8080/url/shorten",
+        `http://${location.hostname}:8080/url/shorten`,
         {
           longurl: longurl,
           shorturl: shortCode ? shortCode : null,
@@ -26,7 +26,7 @@ function Dashboard() {
         }
       );
 
-      setMiniRoute("http://localhost:8080/url/redirect/" + res.data.shortUrl);
+      setMiniRoute(`http://${location.hostname}:8080/url/redirect/` + res.data.shortUrl);
       toast.success("Successfully Shortened the URL", {
         position: "bottom-right",
       });
