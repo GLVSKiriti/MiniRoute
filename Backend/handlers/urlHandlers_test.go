@@ -3,12 +3,14 @@ package handlers
 import (
 	"bytes"
 	"context"
+	"database/sql"
 	"encoding/json"
 	"net/http"
 	"net/http/httptest"
 	"testing"
 
 	"github.com/DATA-DOG/go-sqlmock"
+	"github.com/gorilla/mux"
 )
 
 func TestShorten(t *testing.T) {
@@ -99,6 +101,65 @@ func TestShorten(t *testing.T) {
 		})
 	}
 
+	// Ensure all expectations were met
+	if err := mock.ExpectationsWereMet(); err != nil {
+		t.Errorf("Expectations not met: %s", err)
+	}
+}
+
+func TestRedirectToOriginalUrl(t *testing.T) {
+	db, mock, err := sqlmock.New()
+	if err != nil {
+		t.Fatalf("an error '%s' was not expected when opening a stub database connection", err)
+	}
+	defer db.Close()
+
+	mock.ExpectQuery(`SELECT longurl FROM urlmappings WHERE shorturl = \$1`).WithArgs("repo").
+		WillReturnRows(sqlmock.NewRows([]string{"longurl"}).AddRow("https://github.com/GLVSKiriti/MiniRoute"))
+
+	mock.ExpectQuery(`SELECT longurl FROM urlmappings WHERE shorturl = \$1`).WithArgs("nonShort").
+		WillReturnError(sql.ErrNoRows)
+
+	h := NewBaseHandler(db)
+
+	testCases := []struct {
+		testname  string
+		shortCode string
+		Code      int
+	}{
+		{
+			testname:  "ShortCode valid",
+			shortCode: "repo",
+			Code:      http.StatusSeeOther,
+		},
+		{
+			testname:  "ShortCode Invalid",
+			shortCode: "nonShort",
+			Code:      http.StatusNotFound,
+		},
+	}
+
+	for _, tc := range testCases {
+		t.Run(tc.testname, func(t *testing.T) {
+
+			req, err := http.NewRequest("GET", `/redirect/`+tc.shortCode, nil)
+			if err != nil {
+				t.Fatal(err)
+			}
+
+			// Create a ResponseRecorder to record the response
+			rr := httptest.NewRecorder()
+
+			// Call the function to be tested
+			router := mux.NewRouter()
+			router.HandleFunc("/redirect/{shortCode}", h.RedirectToOriginalUrl)
+			router.ServeHTTP(rr, req)
+
+			if rr.Code != tc.Code {
+				t.Errorf("Expected status code %d, got %d", tc.Code, rr.Code)
+			}
+		})
+	}
 	// Ensure all expectations were met
 	if err := mock.ExpectationsWereMet(); err != nil {
 		t.Errorf("Expectations not met: %s", err)
