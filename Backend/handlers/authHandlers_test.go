@@ -90,3 +90,76 @@ func TestLogin(t *testing.T) {
 		t.Errorf("Expectations not met: %s", err)
 	}
 }
+
+func TestRegister(t *testing.T) {
+	db, mock, err := sqlmock.New()
+	if err != nil {
+		t.Fatalf("an error '%s' was not expected when opening a stub database connection", err)
+	}
+	defer db.Close()
+	mock.ExpectQuery(`SELECT COUNT\(\*\) FROM users WHERE email=\$1`).WithArgs("test1@gmail.com").
+		WillReturnRows(sqlmock.NewRows([]string{"count"}).AddRow(1))
+
+	mock.ExpectQuery(`SELECT COUNT\(\*\) FROM users WHERE email=\$1`).WithArgs("newUser@gmail.com").
+		WillReturnRows(sqlmock.NewRows([]string{"count"}).AddRow(0))
+
+	mock.ExpectQuery(`INSERT INTO users \(email,password\) VALUES\(\$1,\$2\) RETURNING uid`).
+		WithArgs("newUser@gmail.com", "newPassword").
+		WillReturnRows(sqlmock.NewRows([]string{"uid"}).AddRow(2))
+
+	h := NewBaseHandler(db)
+
+	testCases := []struct {
+		testname string
+		email    string
+		password string
+		Code     int
+	}{
+		{
+			testname: "User Already Exists",
+			email:    "test1@gmail.com",
+			password: "anyPassword",
+			Code:     http.StatusConflict,
+		},
+		{
+			testname: "New User So Register",
+			email:    "newUser@gmail.com",
+			password: "newPassword",
+			Code:     http.StatusCreated,
+		},
+	}
+
+	for _, tc := range testCases {
+		t.Run(tc.testname, func(t *testing.T) {
+			requestBody := map[string]string{
+				"email":    tc.email,
+				"password": tc.password,
+			}
+			jsonBody, err := json.Marshal(requestBody)
+			if err != nil {
+				t.Fatal(err)
+			}
+
+			// Create a new mock request
+			req, err := http.NewRequest("POST", "/register", bytes.NewBuffer(jsonBody))
+			if err != nil {
+				t.Fatal(err)
+			}
+
+			// Create a ResponseRecorder to record the response
+			rr := httptest.NewRecorder()
+
+			// Call the function to be tested
+			h.Register(rr, req)
+
+			if rr.Code != tc.Code {
+				t.Errorf("Expected status code %d, got %d", tc.Code, rr.Code)
+			}
+		})
+	}
+
+	// Ensure all expectations were met
+	if err := mock.ExpectationsWereMet(); err != nil {
+		t.Errorf("Expectations not met: %s", err)
+	}
+}
