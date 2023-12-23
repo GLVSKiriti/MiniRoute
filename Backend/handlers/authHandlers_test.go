@@ -1,14 +1,12 @@
 package handlers
 
 import (
-	"bytes"
 	"database/sql"
-	"encoding/json"
 	"net/http"
-	"net/http/httptest"
 	"testing"
 
 	"github.com/DATA-DOG/go-sqlmock"
+	"github.com/GLVSKiriti/MiniRoute/utils"
 )
 
 func TestLogin(t *testing.T) {
@@ -62,20 +60,11 @@ func TestLogin(t *testing.T) {
 				"email":    tc.email,
 				"password": tc.password,
 			}
-			jsonBody, err := json.Marshal(requestBody)
+
+			req, rr, err := utils.MockHttpFunc("/login", "POST", requestBody)
 			if err != nil {
 				t.Fatal(err)
 			}
-
-			// Create a new mock request
-			req, err := http.NewRequest("POST", "/login", bytes.NewBuffer(jsonBody))
-			if err != nil {
-				t.Fatal(err)
-			}
-
-			// Create a ResponseRecorder to record the response
-			rr := httptest.NewRecorder()
-
 			// Call the function to be tested
 			h.Login(rr, req)
 
@@ -135,20 +124,11 @@ func TestRegister(t *testing.T) {
 				"email":    tc.email,
 				"password": tc.password,
 			}
-			jsonBody, err := json.Marshal(requestBody)
+
+			req, rr, err := utils.MockHttpFunc("/register", "POST", requestBody)
 			if err != nil {
 				t.Fatal(err)
 			}
-
-			// Create a new mock request
-			req, err := http.NewRequest("POST", "/register", bytes.NewBuffer(jsonBody))
-			if err != nil {
-				t.Fatal(err)
-			}
-
-			// Create a ResponseRecorder to record the response
-			rr := httptest.NewRecorder()
-
 			// Call the function to be tested
 			h.Register(rr, req)
 
