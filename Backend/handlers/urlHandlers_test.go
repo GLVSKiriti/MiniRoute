@@ -1,15 +1,13 @@
 package handlers
 
 import (
-	"bytes"
 	"context"
 	"database/sql"
-	"encoding/json"
 	"net/http"
-	"net/http/httptest"
 	"testing"
 
 	"github.com/DATA-DOG/go-sqlmock"
+	"github.com/GLVSKiriti/MiniRoute/utils"
 	"github.com/gorilla/mux"
 )
 
@@ -74,23 +72,14 @@ func TestShorten(t *testing.T) {
 				requestBody["shortUrl"] = *tc.CustomShortUrl
 			}
 
-			jsonBody, err := json.Marshal(requestBody)
+			req, rr, err := utils.MockHttpFunc("/shorten", "POST", requestBody)
 			if err != nil {
 				t.Fatal(err)
 			}
 
-			// Create a new mock request
-			req, err := http.NewRequest("POST", "/shorten", bytes.NewBuffer(jsonBody))
-			if err != nil {
-				t.Fatal(err)
-			}
 			ctx := context.WithValue(req.Context(), "Uid", 1.0)
-
 			// Create a new request with the updated context
 			req = req.WithContext(ctx)
-
-			// Create a ResponseRecorder to record the response
-			rr := httptest.NewRecorder()
 
 			// Call the function to be tested
 			h.Shorten(rr, req)
@@ -141,14 +130,10 @@ func TestRedirectToOriginalUrl(t *testing.T) {
 
 	for _, tc := range testCases {
 		t.Run(tc.testname, func(t *testing.T) {
-
-			req, err := http.NewRequest("GET", `/redirect/`+tc.shortCode, nil)
+			req, rr, err := utils.MockHttpFunc(`/redirect/`+tc.shortCode, "GET", nil)
 			if err != nil {
 				t.Fatal(err)
 			}
-
-			// Create a ResponseRecorder to record the response
-			rr := httptest.NewRecorder()
 
 			// Call the function to be tested
 			router := mux.NewRouter()
