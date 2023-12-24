@@ -1,3 +1,7 @@
+install:
+	cd ./Frontend/ && npm install
+	cd ./Backend/ && go mod tidy
+
 test:
 	cd ./Backend/ && go test -v -cover ./...
 
