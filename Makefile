@@ -10,3 +10,5 @@ frontend:
 
 backend:
 	cd ./Backend/ && go run main.go
+
+.PHONY: all frontend backend clean
